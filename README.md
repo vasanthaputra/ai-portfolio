@@ -15,7 +15,7 @@ Forward-testing analytics SaaS for futures traders. Ingests TradingView / Trader
 ![Pnlytics landing page](assets/pnlytics-landing.png)
 
 - **What it does:** walk-forward optimization, Monte Carlo resampling, strategy drift alerts, MAE/MFE trade diagnostics, and slippage reconciliation against actual broker fills — built to solve a real gap: most traders have no honest way to verify that a strategy's live execution matches what its backtest promised.
-- **Stack:** FastAPI + Supabase (Postgres), server-rendered UI, deployed behind Cloudflare on a Windows VPS I operate myself.
+- **Stack:** FastAPI + Supabase (Postgres), server-rendered UI; I operate the production infrastructure end to end.
 - **Security & operations (the part relevant to AI security):** multi-tenant isolation with a read-only shared demo user, webhook authentication, fencing-token distributed locks (lease + generation counter) after a real lock-storm incident, 340+ automated tests, and recurring adversarial security audits with tracked remediation — every audit finding is triaged, fixed, and regression-tested, and I keep the postmortems as engineering records. Two are published here, sanitized:
   - [Database egress storm — a distributed lock without fencing tokens](https://github.com/vasanthaputra/ai-portfolio/blob/main/postmortems/2026-07-database-egress-storm.md)
   - [Supervisor health-check killing live workers](https://github.com/vasanthaputra/ai-portfolio/blob/main/postmortems/2026-07-worker-healthcheck-kills.md)
