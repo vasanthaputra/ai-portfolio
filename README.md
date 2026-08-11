@@ -1,10 +1,10 @@
 # Shiva Domala — AI-Native Product Portfolio
 
-I spent 19 years in information security & GRC (most recently VP at Wells Fargo; CISSP, CISM, ISO 27001 LI). Since April 2026 I have been building and operating production software full-time by directing AI coding agents (Claude Code): I own the product decisions, architecture trade-offs, verification, and security — the agents write the code, and I hold them to evidence.
+I spent 19 years in information security & GRC (most recently VP at Wells Fargo; CISSP, CISM, ISO 27001 LI). Since April 2026 I have been building and operating production software full-time by directing AI coding agents — Claude Code for building, with Gemini and Grok as independent adversarial auditors of the same code. I own the product decisions, architecture trade-offs, verification, and security — the agents write the code, and I hold them to evidence.
 
 The product repos below are **private** (commercial / user-data-bearing code). This page is the tour; I'm happy to walk through any codebase, its test suite, or its security-audit history on a call.
 
-📧 shivanw@gmail.com
+📧 sdomalas@gmail.com
 
 ---
 
@@ -12,7 +12,7 @@ The product repos below are **private** (commercial / user-data-bearing code). T
 
 Forward-testing analytics SaaS for futures traders. Ingests TradingView / TradersPost webhook fills in real time and turns them into strategy-level performance analytics.
 
-- **What it does:** walk-forward optimization, Monte Carlo resampling, strategy drift alerts, MAE/MFE trade diagnostics, and slippage reconciliation against actual broker fills — the analysis I needed as a live NQ/MNQ futures trader and couldn't buy.
+- **What it does:** walk-forward optimization, Monte Carlo resampling, strategy drift alerts, MAE/MFE trade diagnostics, and slippage reconciliation against actual broker fills — built from my own needs as a live NQ/MNQ futures trader.
 - **Stack:** FastAPI + Supabase (Postgres), server-rendered UI, deployed behind Cloudflare on a Windows VPS I operate myself.
 - **Security & operations (the part relevant to AI security):** multi-tenant isolation with a read-only shared demo user, webhook authentication, fencing-token distributed locks (lease + generation counter) after a real lock-storm incident, 340+ automated tests, and recurring adversarial security audits with tracked remediation — every audit finding is triaged, fixed, and regression-tested, and I keep the postmortems (worker health-check kills, database egress storms) as engineering records.
 
@@ -20,7 +20,7 @@ Forward-testing analytics SaaS for futures traders. Ingests TradingView / Trader
 
 Speech-recognition app that listens while you recite Vedic slokas and follows along in real time, highlighting where you are and where you slipped.
 
-- **Hard problems:** Sanskrit phonology (sandhi, visarga, vowel length) breaks stock speech models; I built a lexicon/threshold system plus a QA audit harness that checks every sloka pack for recognition-failure patterns (token cross-match runaway, unresolved-word stalls) before it ships.
+- **Hard problems:** Sanskrit phonology (sandhi, visarga, vowel length) breaks stock speech models; I built a lexicon/threshold system plus a QA audit harness that checks every sloka pack for recognition-failure patterns (false-match runaway, stalls on unrecognized words) before it ships.
 - **Privacy:** recognition is fully on-device — no audio leaves the phone.
 - **Stack:** SwiftUI (iOS, feature-complete) and a Kotlin/Jetpack Compose Android port.
 
