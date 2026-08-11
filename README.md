@@ -4,7 +4,7 @@ I spent 19 years in information security & GRC (most recently VP at Wells Fargo;
 
 The product repos below are **private** (commercial / user-data-bearing code). This page is the tour; I'm happy to walk through any codebase, its test suite, or its security-audit history on a call.
 
-📧 sdomalas@gmail.com
+📧 sdomalas@gmail.com · [linkedin.com/in/shivadomala](https://linkedin.com/in/shivadomala)
 
 ---
 
@@ -12,9 +12,13 @@ The product repos below are **private** (commercial / user-data-bearing code). T
 
 Forward-testing analytics SaaS for futures traders. Ingests TradingView / TradersPost webhook fills in real time and turns them into strategy-level performance analytics.
 
+![Pnlytics landing page](assets/pnlytics-landing.png)
+
 - **What it does:** walk-forward optimization, Monte Carlo resampling, strategy drift alerts, MAE/MFE trade diagnostics, and slippage reconciliation against actual broker fills — built to solve a real gap: most traders have no honest way to verify that a strategy's live execution matches what its backtest promised.
 - **Stack:** FastAPI + Supabase (Postgres), server-rendered UI, deployed behind Cloudflare on a Windows VPS I operate myself.
-- **Security & operations (the part relevant to AI security):** multi-tenant isolation with a read-only shared demo user, webhook authentication, fencing-token distributed locks (lease + generation counter) after a real lock-storm incident, 340+ automated tests, and recurring adversarial security audits with tracked remediation — every audit finding is triaged, fixed, and regression-tested, and I keep the postmortems (worker health-check kills, database egress storms) as engineering records.
+- **Security & operations (the part relevant to AI security):** multi-tenant isolation with a read-only shared demo user, webhook authentication, fencing-token distributed locks (lease + generation counter) after a real lock-storm incident, 340+ automated tests, and recurring adversarial security audits with tracked remediation — every audit finding is triaged, fixed, and regression-tested, and I keep the postmortems as engineering records. Two are published here, sanitized:
+  - [Database egress storm — a distributed lock without fencing tokens](https://github.com/vasanthaputra/ai-portfolio/blob/main/postmortems/2026-07-database-egress-storm.md)
+  - [Supervisor health-check killing live workers](https://github.com/vasanthaputra/ai-portfolio/blob/main/postmortems/2026-07-worker-healthcheck-kills.md)
 
 ## 🕉️ Smaran — Sanskrit chant-learning app *(iOS + Android)*
 
@@ -32,6 +36,10 @@ On-device speech-practice app built for my own family: glowing word cards, tap-t
 - **Privacy by design:** everything runs on-device using Apple's Speech framework; no accounts, no telemetry, no cloud.
 
 ---
+
+## Related public work
+
+- [renko-strategy-optimizer](https://github.com/vasanthaputra/renko-strategy-optimizer) — quantitative strategy backtester & optimizer for Renko charts on NQ/MNQ futures: Bayesian optimization, regime detection, TradingView CDP bridge.
 
 ## Why this matters for AI security
 
