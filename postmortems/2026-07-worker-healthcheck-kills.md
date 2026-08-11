@@ -1,18 +1,18 @@
 # Postmortem: Supervisor Health-Check Killing Live Workers (July 2026)
 
-**System:** Pnlytics (uvicorn workers on a Windows VPS, external uptime monitoring)
+**System:** Pnlytics (uvicorn workers on a self-managed host, external uptime monitoring)
 **Impact:** ~8.9% availability flapping on the public endpoint; long-running data imports dying mid-run. No data corruption (imports are idempotent and resumable).
 **Status:** Resolved — one-line configuration fix after evidence-first diagnosis.
 
 ## Symptom
 
-The uptime monitor showed the site flapping — short, frequent windows of failed checks totalling ~8.9% — and background import jobs were dying partway through with no error in application logs. Workers were exiting with Windows status `0x10000` roughly 70 times per day.
+The uptime monitor showed the site flapping — short, frequent windows of failed checks totalling ~8.9% — and background import jobs were dying partway through with no error in application logs. Workers were exiting with a hard-kill status roughly 70 times per day.
 
 ## Investigation
 
-The tempting explanation was resource contention from a co-tenant application on the same VPS. Instead of acting on that hunch, I instrumented process exits and captured 9 out of 9 worker deaths with full context. All nine correlated with the same trigger: uvicorn's **worker health-check timeout, default 5 seconds**. During CPU-contended periods (US market hours, when webhook and import load peaks), a busy worker took longer than 5 s to answer its supervisor's health probe — so the supervisor `TerminateProcess`-ed a perfectly healthy worker mid-request. The monitor flap and the dying imports were the same bug wearing two costumes.
+The tempting explanation was resource contention from another application on the same host. Instead of acting on that hunch, I instrumented process exits and captured 9 out of 9 worker deaths with full context. All nine correlated with the same trigger: uvicorn's **worker health-check timeout, default 5 seconds**. During CPU-contended periods (US market hours, when webhook and import load peaks), a busy worker took longer than 5 s to answer its supervisor's health probe — so the supervisor hard-killed a perfectly healthy worker mid-request. The monitor flap and the dying imports were the same bug wearing two costumes.
 
-The co-tenant application was formally cleared — worth stating, because it had been the leading suspect.
+The neighboring application was formally cleared — worth stating, because it had been the leading suspect.
 
 ## Fix
 
